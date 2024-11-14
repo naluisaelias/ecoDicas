@@ -3,6 +3,7 @@ package br.com.analuisa936_juliocesar94543
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import br.com.analuisa936_juliocesar94543.viewModel.DicasViewModelFactory
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: DicasViewModel
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +28,20 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val dicasAdapter = DicasAdapter { dica -> viewModel.removeDica(dica) }
         recyclerView.adapter = dicasAdapter
+
+        searchView = findViewById(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    viewModel.filterDicas(it)
+                }
+                return true
+            }
+        })
 
         val tituloInput = findViewById<EditText>(R.id.tituloInput)
         val descInput = findViewById<EditText>(R.id.descInput)

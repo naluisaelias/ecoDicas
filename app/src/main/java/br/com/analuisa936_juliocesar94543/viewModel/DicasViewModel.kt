@@ -3,6 +3,7 @@ package br.com.analuisa936_juliocesar94543.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import br.com.analuisa936_juliocesar94543.data.DicaDatabase
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 class DicasViewModel (application: Application) : AndroidViewModel (application) {
 
     private val dicaDao: DicaDao
+
+    private val _filteredDicas = MutableLiveData<List<DicaModel>>()
 
     val dicasLiveData: LiveData<List<DicaModel>>
 
@@ -39,6 +42,15 @@ class DicasViewModel (application: Application) : AndroidViewModel (application)
     fun removeDica(dica: DicaModel){
         viewModelScope.launch(Dispatchers.IO){
             dicaDao.delete(dica)
+        }
+    }
+
+    fun filterDicas(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val filteredList = dicaDao.getAll().value?.filter {
+                it.titulo.contains(query, ignoreCase = true) || it.descricao.contains(query, ignoreCase = true)
+            }
+            _filteredDicas.postValue(filteredList ?: listOf())
         }
     }
 
