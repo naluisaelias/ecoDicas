@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import br.com.analuisa936_juliocesar94543.R
 import br.com.analuisa936_juliocesar94543.model.DicaModel
@@ -33,6 +34,11 @@ class DicasAdapter(private val onDicaRemoved: (DicaModel) -> Unit) : RecyclerVie
     override fun onBindViewHolder(holder: DicaViewHolder, position: Int) {
         val dica = dicas[position]
         holder.bind(dica)
+
+        holder.itemView.setOnClickListener {
+            val detalhes = "Título: ${dica.titulo}\nDescrição: ${dica.descricao}"
+            Toast.makeText(holder.itemView.context, detalhes, Toast.LENGTH_LONG).show()
+        }
 
 
         holder.itemView.setOnClickListener {
