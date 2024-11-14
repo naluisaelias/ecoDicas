@@ -1,5 +1,6 @@
 package br.com.analuisa936_juliocesar94543
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val botaoIntegrantes: Button = findViewById(R.id.buttonIntegrantes)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -65,6 +68,11 @@ class MainActivity : AppCompatActivity() {
 
             tituloInput.text.clear()
             descInput.text.clear()
+        }
+
+        botaoIntegrantes.setOnClickListener {
+            val intent = Intent(this, IntegrantesActivity::class.java)
+            startActivity(intent)
         }
 
         val viewModelFactory = DicasViewModelFactory(application)
