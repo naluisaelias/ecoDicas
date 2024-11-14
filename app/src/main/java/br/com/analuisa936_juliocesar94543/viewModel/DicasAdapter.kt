@@ -3,6 +3,7 @@ package br.com.analuisa936_juliocesar94543.viewModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -16,10 +17,15 @@ class DicasAdapter(private val onDicaRemoved: (DicaModel) -> Unit) : RecyclerVie
     inner class DicaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titulo: TextView = view.findViewById(R.id.titulo)
         val desc: TextView = view.findViewById(R.id.descricao)
+        val deleteIcon: ImageView = view.findViewById(R.id.deleteIcon)
 
         fun bind(dica: DicaModel) {
             titulo.text = dica.titulo
             desc.text = dica.descricao
+
+            deleteIcon.setOnClickListener{
+                onDicaRemoved(dica)
+            }
         }
     }
 
@@ -38,11 +44,6 @@ class DicasAdapter(private val onDicaRemoved: (DicaModel) -> Unit) : RecyclerVie
         holder.itemView.setOnClickListener {
             val detalhes = "Título: ${dica.titulo}\nDescrição: ${dica.descricao}"
             Toast.makeText(holder.itemView.context, detalhes, Toast.LENGTH_LONG).show()
-        }
-
-
-        holder.itemView.setOnClickListener {
-            onDicaRemoved(dica)
         }
     }
 
